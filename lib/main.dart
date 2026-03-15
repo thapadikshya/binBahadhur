@@ -1,3 +1,4 @@
+import 'package:binbahadhur/core/theme/theme.dart';
 import 'package:binbahadhur/features/auth/presentation/pages/welcome_page.dart';
 import 'package:flutter/material.dart';
 
@@ -11,10 +12,10 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'binBahadhur',
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(primaryColor: Colors.black),
-      home: WelcomePage(),
+      title: 'binBahadhur',
+      theme: AppTheme.darkThemeMode,
+      home: const WelcomePage(),
     );
   }
 }

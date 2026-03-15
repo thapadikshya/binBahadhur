@@ -1,110 +1,42 @@
-import 'package:binbahadhur/core/common/widgets/custom_citylist.dart';
-import 'package:flutter/material.dart';
 import 'package:binbahadhur/core/theme/app_pallete.dart';
-import 'package:binbahadhur/core/common/widgets/custom_textfield.dart';
+import 'package:binbahadhur/features/auth/presentation/widgets/auth_field.dart';
+import 'package:flutter/material.dart';
 
 class SignupPage extends StatefulWidget {
-  final VoidCallback onSwitch;
-  final TextEditingController nameController;
-  final TextEditingController emailController;
-  final TextEditingController passwordController;
-  final TextEditingController confirmPasswordController;
-
-  const SignupPage({
-    super.key,
-    required this.onSwitch,
-    required this.nameController,
-    required this.emailController,
-    required this.passwordController,
-    required this.confirmPasswordController,
-  });
+  const SignupPage({super.key});
 
   @override
-  _SignupPageState createState() => _SignupPageState();
+  State<SignupPage> createState() => _SignupPageState();
 }
 
 class _SignupPageState extends State<SignupPage> {
-  String? _selectedCity;
-
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
-      key: const ValueKey("signup_form"),
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 35, vertical: 40),
+      child: Container(
+        // Make container take only as much space as needed
+        alignment: Alignment.topLeft,
+        padding: const EdgeInsets.all(20),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const Text(
+          mainAxisSize: MainAxisSize.min, // important!
+          children: const [
+            Text(
               "Namaste\nHello there, please signup to continue!",
-              style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+              style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+                color: AppPallete.blackColor,
+              ),
             ),
-            const SizedBox(height: 30),
-            CustomTextField(
-              controller: widget.nameController,
-              hintText: "Full Name",
-            ),
-            const SizedBox(height: 20),
-            CustomTextField(
-              controller: widget.emailController,
-              hintText: "Email",
-            ),
+            const SizedBox(height: 15),
+            AuthField(hintText: "Name"),
 
-            const SizedBox(height: 20),
-            CustomTextField(
-              controller: widget.passwordController,
-              hintText: "Password",
-              maxLines: 1,
-            ),
-            const SizedBox(height: 20),
-            CustomTextField(
-              controller: widget.confirmPasswordController,
-              hintText: "Confirm Password",
-              maxLines: 1,
-            ),
-            const SizedBox(height: 20),
-            // Add City Dropdown here
-            CityDropdownField(
-              selectedCity: _selectedCity,
-              onChanged: (value) => setState(() => _selectedCity = value),
-              // Reuse the static list
-            ),
-            const SizedBox(height: 60),
-            ElevatedButton(
-              onPressed: () {
-                // You can access _selectedCity here when button is pressed
-                if (_selectedCity == null || _selectedCity!.isEmpty) {
-                  // Show error or validation message
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(content: Text('Please select a city')),
-                  );
-                  return;
-                }
+            const SizedBox(height: 15),
+            AuthField(hintText: "Email"),
 
-                // Your signup logic here
-                print('Signing up with city: $_selectedCity');
-              },
-              style: ElevatedButton.styleFrom(
-                minimumSize: const Size(double.infinity, 50),
-                backgroundColor: AppPallete.backgroundColor,
-              ),
-              child: const Text(
-                "Sign Up",
-                style: TextStyle(fontSize: 22, color: Colors.white),
-              ),
-            ),
-            const SizedBox(height: 20),
-            GestureDetector(
-              onTap: widget.onSwitch,
-              child: Text(
-                "Already have an account? Login",
-                style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                  color: AppPallete.backgroundColor,
-                ),
-              ),
-            ),
+            const SizedBox(height: 15),
+            AuthField(hintText: "Password"),
           ],
         ),
       ),

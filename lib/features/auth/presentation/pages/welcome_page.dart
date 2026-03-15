@@ -1,7 +1,7 @@
+import 'package:binbahadhur/features/auth/presentation/pages/signin_page.dart';
+import 'package:binbahadhur/features/auth/presentation/pages/signup_page.dart';
 import 'package:flutter/material.dart';
 import 'package:binbahadhur/core/theme/app_pallete.dart';
-import 'signup_page.dart';
-import 'signin_page.dart';
 
 class WelcomePage extends StatefulWidget {
   const WelcomePage({super.key});
@@ -31,11 +31,11 @@ class _WelcomePageState extends State<WelcomePage> {
       setState(() => _imageAnimated = true);
     });
     //text aauxa
-    Future.delayed(const Duration(seconds: 1), () {
+    Future.delayed(const Duration(seconds: 2), () {
       setState(() => _textVisible = true);
     });
     //signup page janxa mathi
-    Future.delayed(const Duration(seconds: 2), () {
+    Future.delayed(const Duration(seconds: 3), () {
       setState(() => _slideUp = true);
     });
   }
@@ -81,7 +81,7 @@ class _WelcomePageState extends State<WelcomePage> {
                     ),
                   ),
                 ),
-                const SizedBox(height: 20),
+                const SizedBox(height: 15),
                 AnimatedOpacity(
                   duration: const Duration(seconds: 1),
                   opacity: _textVisible ? 1 : 0,
@@ -111,40 +111,17 @@ class _WelcomePageState extends State<WelcomePage> {
             child: Container(
               //white background/cover
               decoration: const BoxDecoration(
-                color: Colors.white,
+                color: AppPallete.whiteColor,
                 borderRadius: BorderRadius.vertical(top: Radius.circular(30)),
               ),
-              child: ClipRRect(
-                borderRadius: const BorderRadius.vertical(
-                  top: Radius.circular(30),
-                ),
-                child: AnimatedSwitcher(
-                  duration: const Duration(milliseconds: 400),
-                  child: _isLogin
-                      ? SigninPage(
-                          key: const ValueKey("login"),
-                          onSwitch: () {
-                            setState(() => _isLogin = false);
-                          },
-                          // PASS CONTROLLERS TO SIGNIN PAGE
-                          emailController: emailController,
-                          passwordController: passwordController,
-                        )
-                      : SignupPage(
-                          key: const ValueKey("signup"),
-                          onSwitch: () {
-                            setState(() => _isLogin = true);
-                          },
-                          // PASS CONTROLLERS TO SIGNUP PAGE
-                          nameController: nameController,
-                          emailController: emailController,
-                          passwordController: passwordController,
-                          confirmPasswordController: confirmPasswordController,
-                        ),
-                ),
+
+              child: AnimatedSwitcher(
+                duration: const Duration(milliseconds: 400),
+                child: _isLogin ? SigninPage() : SignupPage(),
               ),
             ),
           ),
+          // ),
         ],
       ),
     );
