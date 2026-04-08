@@ -1,5 +1,5 @@
 import 'package:binbahadhur/core/theme/theme.dart';
-import 'package:binbahadhur/features/auth/presentation/pages/welcome_page.dart';
+import 'package:binbahadhur/features/home/presentation/pages/home_page.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -15,7 +15,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'binBahadhur',
       theme: AppTheme.darkThemeMode,
-      home: const WelcomePage(),
+      home: const HomePage(),
     );
   }
 }
