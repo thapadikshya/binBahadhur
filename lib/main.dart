@@ -35,8 +35,6 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    // Listens to the UserProvider. Whenever the user state changes (e.g., after login),
-    // this build method triggers again and updates the 'home' widget.
     final user = Provider.of<UserProvider>(context).user;
 
     return MaterialApp(
@@ -44,10 +42,10 @@ class _MyAppState extends State<MyApp> {
       title: 'binBahadhur',
       theme: AppTheme.darkThemeMode,
 
-      // CORRECTED: Calling the static method from your AppRouter class
+      // Uses router to handle navigation
       onGenerateRoute: (settings) => AppRouter.generateRoute(settings),
 
-      // LOGIC: Automatically switches between Home and Welcome based on login status
+      // Show HomePage if logged in, else WelcomePage
       home: user.token.isNotEmpty ? const HomePage() : const WelcomePage(),
     );
   }
