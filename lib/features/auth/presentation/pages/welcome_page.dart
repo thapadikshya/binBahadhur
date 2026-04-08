@@ -114,10 +114,21 @@ class _WelcomePageState extends State<WelcomePage> {
                 color: AppPallete.whiteColor,
                 borderRadius: BorderRadius.vertical(top: Radius.circular(30)),
               ),
-
+              alignment: Alignment.topLeft,
               child: AnimatedSwitcher(
                 duration: const Duration(milliseconds: 400),
-                child: _isLogin ? SigninPage() : SignupPage(),
+
+                child: _isLogin
+                    ? SigninPage(
+                        onSignUpTap: () {
+                          setState(() => _isLogin = false);
+                        },
+                      )
+                    : SignupPage(
+                        onSignInTap: () {
+                          setState(() => _isLogin = true);
+                        },
+                      ),
               ),
             ),
           ),
