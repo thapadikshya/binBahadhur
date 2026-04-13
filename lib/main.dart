@@ -45,7 +45,7 @@ class _MyAppState extends State<MyApp> {
       // Uses router to handle navigation
       onGenerateRoute: (settings) => AppRouter.generateRoute(settings),
 
-      // Show HomePage if logged in, else WelcomePage
+      // LOGIC: Automatically switches between Home and Welcome based on login status
       home: user.token.isNotEmpty ? const HomePage() : const WelcomePage(),
     );
   }
