@@ -16,7 +16,6 @@ class AppRouter {
           settings: routeSettings,
           builder: (_) => const HomePage(),
         );
-
       default:
         return MaterialPageRoute(
           settings: routeSettings,

@@ -1,5 +1,6 @@
-import 'package:binbahadhur/core/theme/app_pallete.dart';
 import 'package:flutter/material.dart';
+import 'package:binbahadhur/core/widgets/custom_app_bar.dart';
+import 'package:binbahadhur/core/widgets/custom_option.dart';
 import 'package:binbahadhur/features/trash_detection/presentation/pages/camera_page.dart';
 
 class SchedulePage extends StatelessWidget {
@@ -8,13 +9,11 @@ class SchedulePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text(
-          'Schedule Page',
-          style: TextStyle(color: Colors.white),
-        ),
-        backgroundColor: AppPallete.backgroundColor,
+      appBar: const CustomAppBar(
+        title: "Schedule Pickup",
+        showBackButton: true,
       ),
+
       body: Container(
         padding: const EdgeInsets.all(20),
         color: Colors.white,
@@ -22,42 +21,22 @@ class SchedulePage extends StatelessWidget {
         height: double.infinity,
 
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const SizedBox(height: 20),
+            const SizedBox(height: 5),
 
-            // Report button
-            Column(
-              children: [
-                ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.white,
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 30,
-                      vertical: 15,
-                    ),
+            ServiceCard(
+              icon: Icons.camera_alt,
+              label: "Snap Picture",
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const CameraPage(mode: "schedule"),
                   ),
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const CameraPage(),
-                      ),
-                    );
-                  },
-                  child: Icon(Icons.camera, size: 50, color: Colors.green),
-                ),
-              ],
+                );
+              },
             ),
-
-            const SizedBox(height: 10),
-            Text(
-              "Snap Picture",
-              style: TextStyle(fontSize: 16, color: Colors.black),
-            ),
-
-            // Reward button
           ],
         ),
       ),

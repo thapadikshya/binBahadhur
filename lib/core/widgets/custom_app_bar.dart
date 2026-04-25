@@ -1,3 +1,4 @@
+import 'package:binbahadhur/core/theme/app_pallete.dart';
 import 'package:flutter/material.dart';
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
@@ -19,11 +20,9 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
       centerTitle: true,
       title: Text(
         title,
-        style: const TextStyle(
-          fontSize: 18,
-          fontWeight: FontWeight.bold,
-        ),
+        style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
       ),
+      backgroundColor: AppPallete.backgroundColor,
 
       // Back button
       leading: showBackButton

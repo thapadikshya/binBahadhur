@@ -1,108 +1,134 @@
+import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:binbahadhur/core/theme/app_pallete.dart';
+import 'package:binbahadhur/core/widgets/custom_option.dart';
 import 'package:binbahadhur/features/schedule_pickup/presentation/pages/schedule_page.dart';
 import 'package:binbahadhur/features/report_and_reward/presentation/pages/report_page.dart';
-import 'package:flutter/material.dart';
 
 class HomePage extends StatelessWidget {
   static const String routeName = '/home';
+
   const HomePage({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final String name = "Ram";
+    final String date = DateFormat('EEEE, d MMM').format(DateTime.now());
+
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Home Page', style: TextStyle(color: Colors.white)),
-        backgroundColor: AppPallete.backgroundColor,
-      ),
-      body: Container(
-        padding: const EdgeInsets.all(20),
-        color: Colors.white,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Center(
-              child: const Text(
-                'Welcome to the Home Page!',
-                style: TextStyle(fontSize: 20, color: Colors.black),
+      body: Column(
+        children: [
+          Container(
+            width: double.infinity,
+            padding: const EdgeInsets.all(20),
+            color: AppPallete.backgroundColor,
+            child: SafeArea(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            "Hello, $name!",
+                            style: const TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white,
+                            ),
+                          ),
+                          const SizedBox(height: 4),
+                          Text(
+                            date,
+                            style: const TextStyle(
+                              fontSize: 14,
+                              color: Colors.white70,
+                            ),
+                          ),
+                        ],
+                      ),
+                      Container(
+                        padding: const EdgeInsets.all(12),
+                        decoration: const BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: Colors.white,
+                        ),
+                        child: Image.asset(
+                          "assets/images/fohor_rookie.png",
+                          height: 60,
+                          width: 60,
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
               ),
             ),
-            const SizedBox(height: 20),
+          ),
 
-            //Schedule Pickup Button
-            Row(
-              children: [
-                Column(
-                  children: [
-                    ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.white,
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 30,
-                          vertical: 15,
-                        ),
-                      ),
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const SchedulePage(),
-                          ),
-                        );
-                      },
-                      child: Icon(
-                        Icons.schedule,
-                        size: 50,
-                        color: Colors.green,
-                      ),
-                    ),
-                    const SizedBox(height: 10),
-                    Text(
-                      "Schedule Pickup",
-                      style: TextStyle(fontSize: 16, color: Colors.black),
-                    ),
-                  ],
+          Expanded(
+            child: Container(
+              width: double.infinity,
+              padding: const EdgeInsets.all(20),
+              decoration: const BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(30),
+                  topRight: Radius.circular(30),
                 ),
-                const SizedBox(width: 10),
-                Column(
-                  children: [
-                    ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.white,
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 30,
-                          vertical: 15,
-                        ),
-                      ),
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const ReportPage(),
-                          ),
-                        );
-                      },
-                      child: Icon(
-                        Icons.card_giftcard,
-                        size: 50,
-                        color: Colors.green,
-                      ),
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text(
+                    "Services",
+                    style: TextStyle(
+                      fontSize: 22,
+                      fontWeight: FontWeight.bold,
+                      color: AppPallete.blackColor,
                     ),
-                    const SizedBox(height: 10),
-                    Text(
-                      "Report & Reward",
-                      style: TextStyle(fontSize: 16, color: Colors.black),
-                    ),
-                  ],
-                ),
-              ],
+                  ),
+
+                  const SizedBox(height: 20),
+
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      ServiceCard(
+                        icon: Icons.schedule,
+                        label: "Schedule Pickup",
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const SchedulePage(),
+                            ),
+                          );
+                        },
+                      ),
+
+                      ServiceCard(
+                        icon: Icons.card_giftcard,
+                        label: "Report & Reward",
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const ReportPage(),
+                            ),
+                          );
+                        },
+                      ),
+                    ],
+                  ),
+                ],
+              ),
             ),
-
-            // Report button
-
-            // Reward button
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

@@ -3,9 +3,11 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:camera/camera.dart';
 import 'package:binbahadhur/features/trash_detection/presentation/pages/photo_preview_page.dart';
+import 'package:binbahadhur/core/widgets/custom_app_bar.dart';
 
 class CameraPage extends StatefulWidget {
-  const CameraPage({super.key});
+  final String mode;
+  const CameraPage({super.key, required this.mode});
 
   @override
   State<CameraPage> createState() => _CameraPageState();
@@ -38,25 +40,64 @@ class _CameraPageState extends State<CameraPage> {
     }
 
     return Scaffold(
-      appBar: AppBar(title: const Text("Camera")),
-      body: Stack(
-        children: [SizedBox.expand(child: CameraPreview(controller!))],
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () async {
-          if (controller == null) return;
+      appBar: const CustomAppBar(title: "Camera", showBackButton: true),
 
-          final imageFile = await controller!.takePicture();
-          if (!mounted) return;
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) =>
-                  PhotoPreviewPage(imageFile: File(imageFile.path)),
+      body: Container(
+        color: Colors.white,
+        child: Stack(
+          children: [
+            Positioned.fill(
+              child: FittedBox(
+                fit: BoxFit.cover,
+                child: SizedBox(
+                  width: controller!.value.previewSize!.height,
+                  height: controller!.value.previewSize!.width,
+                  child: CameraPreview(controller!),
+                ),
+              ),
             ),
-          );
-        },
-        child: const Icon(Icons.camera),
+
+            Positioned(
+              bottom: 40,
+              left: 0,
+              right: 0,
+              child: Center(
+                child: GestureDetector(
+                  onTap: () async {
+                    final picture = await controller!.takePicture();
+
+                    if (!mounted) return;
+
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => PhotoPreviewPage(
+                          imageFile: File(picture.path),
+                          mode: widget.mode,
+                        ),
+                      ),
+                    );
+                  },
+
+                  child: Container(
+                    width: 75,
+                    height: 75,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: Colors.white,
+                      border: Border.all(color: Colors.green, width: 4),
+                    ),
+                    child: const Icon(
+                      Icons.camera_alt,
+                      size: 35,
+                      color: Colors.black,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

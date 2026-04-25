@@ -9,6 +9,7 @@ class AppTheme {
 
   static final darkThemeMode = ThemeData.dark().copyWith(
     scaffoldBackgroundColor: AppPallete.backgroundColor,
+    textTheme: ThemeData.dark().textTheme.apply(fontFamily: 'Poppins'),
     inputDecorationTheme: InputDecorationTheme(
       contentPadding: EdgeInsets.all(27),
       enabledBorder: _border(),
