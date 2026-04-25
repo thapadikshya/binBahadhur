@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+
 import 'package:binbahadhur/core/theme/app_pallete.dart';
 import 'package:binbahadhur/core/widgets/custom_option.dart';
-import 'package:binbahadhur/features/schedule_pickup/presentation/pages/schedule_page.dart';
 import 'package:binbahadhur/features/report_and_reward/presentation/pages/report_page.dart';
+import 'package:binbahadhur/features/schedule_pickup/presentation/pages/schedule_page.dart';
 
 class HomePage extends StatelessWidget {
   static const String routeName = '/home';

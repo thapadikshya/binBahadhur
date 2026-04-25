@@ -5,8 +5,8 @@ import 'package:binbahadhur/core/error/error_handling.dart';
 import 'package:binbahadhur/features/auth/domain/user.dart';
 import 'package:binbahadhur/features/auth/presentation/providers/user_provider.dart';
 import 'package:binbahadhur/features/home/presentation/pages/home_page.dart';
-import 'package:binbahadhur/features/admin/presentation/pages/admin_page.dart'; // Ensure these match your paths
-import 'package:binbahadhur/features/employee/presentation/pages/employee.dart'; // Ensure these match your paths
+import 'package:binbahadhur/features/admin/presentation/pages/admin_page.dart';
+import 'package:binbahadhur/features/employee/presentation/pages/employee.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
@@ -25,7 +25,7 @@ class AuthServices {
         id: '',
         email: email,
         name: name,
-        type: 'user', // Default type
+        type: 'user',
         token: '',
         password: password,
       );
@@ -78,19 +78,16 @@ class AuthServices {
         onSuccess: () async {
           SharedPreferences prefs = await SharedPreferences.getInstance();
 
-          // Set user data in Provider
           final userProvider = Provider.of<UserProvider>(
             context,
             listen: false,
           );
           userProvider.setUser(res.body);
 
-          // Save token locally
           await prefs.setString('x-auth-token', jsonDecode(res.body)['token']);
 
           if (!context.mounted) return;
 
-          // DETERMINING THE ROUTE BASED ON TYPE
           String nextRoute;
           if (userProvider.user.isAdmin) {
             nextRoute = AdminPage.routeName;
@@ -147,7 +144,7 @@ class AuthServices {
         userProvider.setUser(userRes.body);
       }
     } catch (e) {
-      // Quietly fail or log during background data fetch
+      // Background task failed, usually due to no internet
     }
   }
 }
