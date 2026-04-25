@@ -1,8 +1,10 @@
 import 'package:binbahadhur/core/theme/theme.dart';
+import 'package:binbahadhur/features/admin/presentation/pages/admin_page.dart';
 import 'package:binbahadhur/features/auth/presentation/pages/welcome_page.dart';
 import 'package:binbahadhur/features/auth/presentation/providers/user_provider.dart';
-import 'package:binbahadhur/features/home/presentation/pages/home_page.dart';
+import 'package:binbahadhur/features/employee/presentation/pages/employee.dart';
 import 'package:binbahadhur/features/auth/data/auth_services.dart';
+import 'package:binbahadhur/features/home/presentation/pages/home_page.dart';
 import 'package:binbahadhur/router.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -29,7 +31,6 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     super.initState();
-    // This method checks SharedPreferences for a token and updates the Provider
     authService.getUserData(context);
   }
 
@@ -41,12 +42,23 @@ class _MyAppState extends State<MyApp> {
       debugShowCheckedModeBanner: false,
       title: 'binBahadhur',
       theme: AppTheme.darkThemeMode,
-
-      // Uses router to handle navigation
       onGenerateRoute: (settings) => AppRouter.generateRoute(settings),
 
-      // LOGIC: Automatically switches between Home and Welcome based on login status
-      home: user.token.isNotEmpty ? const HomePage() : const WelcomePage(),
+      home: user.token.isEmpty ? const WelcomePage() : _getHome(user.type),
     );
+  }
+
+  Widget _getHome(String type) {
+    switch (type) {
+      case 'admin':
+        return const AdminPage();
+      case 'employee':
+        return const EmployeePage();
+      case 'user_provider':
+        return const HomePage();
+      case 'user':
+      default:
+        return const WelcomePage();
+    }
   }
 }

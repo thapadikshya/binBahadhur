@@ -14,9 +14,8 @@ class _WelcomePageState extends State<WelcomePage> {
   bool _imageAnimated = false;
   bool _textVisible = false;
   bool _slideUp = false;
-  bool _isLogin = false; //login rw signup page ma switch garna
+  bool _isLogin = false; // Switch between login and signup
 
-  // user ly type gareko value hold garxa
   final TextEditingController nameController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
@@ -26,23 +25,31 @@ class _WelcomePageState extends State<WelcomePage> {
   @override
   void initState() {
     super.initState();
-    //binbahadhur mascot aauxa
+
+    // Animation: Mascot appears
     Future.delayed(Duration.zero, () {
-      setState(() => _imageAnimated = true);
+      if (mounted) {
+        setState(() => _imageAnimated = true);
+      }
     });
-    //text aauxa
+
+    // Animation: Text appears
     Future.delayed(const Duration(seconds: 2), () {
-      setState(() => _textVisible = true);
+      if (mounted) {
+        setState(() => _textVisible = true);
+      }
     });
-    //signup page janxa mathi
+
+    // Animation: Forms slide up
     Future.delayed(const Duration(seconds: 3), () {
-      setState(() => _slideUp = true);
+      if (mounted) {
+        setState(() => _slideUp = true);
+      }
     });
   }
 
   @override
   void dispose() {
-    // DISPOSE CONTROLLERS
     nameController.dispose();
     emailController.dispose();
     passwordController.dispose();
@@ -58,7 +65,7 @@ class _WelcomePageState extends State<WelcomePage> {
       backgroundColor: AppPallete.backgroundColor,
       body: Stack(
         children: [
-          /// Welcomepage content
+          /// Mascot and Title Header
           AnimatedPositioned(
             duration: const Duration(seconds: 1),
             curve: Curves.easeInOut,
@@ -98,18 +105,15 @@ class _WelcomePageState extends State<WelcomePage> {
             ),
           ),
 
-          // animate varw aauney
+          /// Sliding Auth Container (Login/Signup)
           AnimatedPositioned(
             duration: const Duration(seconds: 1),
             curve: Curves.easeInOut,
-            top: _slideUp
-                ? 200
-                : height, //200 samma matrw mathi janxa so that mascot hoss mathi vanerw
+            top: _slideUp ? 200 : height,
             left: 0,
             right: 0,
             bottom: 0,
             child: Container(
-              //white background/cover
               decoration: const BoxDecoration(
                 color: AppPallete.whiteColor,
                 borderRadius: BorderRadius.vertical(top: Radius.circular(30)),
@@ -117,22 +121,24 @@ class _WelcomePageState extends State<WelcomePage> {
               alignment: Alignment.topLeft,
               child: AnimatedSwitcher(
                 duration: const Duration(milliseconds: 400),
-
                 child: _isLogin
                     ? SigninPage(
                         onSignUpTap: () {
-                          setState(() => _isLogin = false);
+                          if (mounted) {
+                            setState(() => _isLogin = false);
+                          }
                         },
                       )
                     : SignupPage(
                         onSignInTap: () {
-                          setState(() => _isLogin = true);
+                          if (mounted) {
+                            setState(() => _isLogin = true);
+                          }
                         },
                       ),
               ),
             ),
           ),
-          // ),
         ],
       ),
     );

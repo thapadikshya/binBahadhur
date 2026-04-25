@@ -44,7 +44,17 @@ const {email, password}=req.body;
         .status(400)
         .json({ msg: "User with this email does not exist!" });
     }
+if (user.status === 'suspended') {
+      return res.status(403).json({ 
+        msg: "Your account has been suspended. Please contact the administrator." 
+      });
+    }
 
+    if (user.status === 'blocked') {
+      return res.status(403).json({ 
+        msg: "This account has been permanently blocked." 
+      });
+    }
     const isMatch = await bcryptjs.compare(password, user.password);
     if (!isMatch) {
       return res.status(400).json({ msg: "Incorrect password." });

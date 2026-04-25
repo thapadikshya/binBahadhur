@@ -6,8 +6,7 @@ import 'package:binbahadhur/core/theme/app_pallete.dart';
 class AuthButton extends StatelessWidget {
   final String buttonText;
   final VoidCallback onTap;
-  const AuthButton({Key? key, required this.buttonText, required this.onTap})
-    : super(key: key);
+  const AuthButton({super.key, required this.buttonText, required this.onTap});
 
   @override
   Widget build(BuildContext context) {

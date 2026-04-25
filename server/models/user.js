@@ -36,7 +36,10 @@ const userSchema = mongoose.Schema({
    type: {
     type: String,
     default: "user",
+    enum: ["user", "admin", "employee", "user_provider"],
   },
+
+  status: { type: String, default: "active" },
 });
 
 const User = mongoose.model("User", userSchema);

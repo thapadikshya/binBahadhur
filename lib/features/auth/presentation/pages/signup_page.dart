@@ -9,7 +9,7 @@ import 'package:binbahadhur/features/auth/presentation/widgets/auth_field.dart';
 
 class SignupPage extends StatefulWidget {
   final VoidCallback onSignInTap;
-  const SignupPage({Key? key, required this.onSignInTap}) : super(key: key);
+  const SignupPage({super.key, required this.onSignInTap});
 
   @override
   State<SignupPage> createState() => _SignupPageState();

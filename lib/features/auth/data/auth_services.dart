@@ -1,18 +1,19 @@
 import 'dart:convert';
-
 import 'package:binbahadhur/core/constants/global_variable.dart';
 import 'package:binbahadhur/core/constants/utils.dart';
 import 'package:binbahadhur/core/error/error_handling.dart';
 import 'package:binbahadhur/features/auth/domain/user.dart';
 import 'package:binbahadhur/features/auth/presentation/providers/user_provider.dart';
 import 'package:binbahadhur/features/home/presentation/pages/home_page.dart';
+import 'package:binbahadhur/features/admin/presentation/pages/admin_page.dart'; // Ensure these match your paths
+import 'package:binbahadhur/features/employee/presentation/pages/employee.dart'; // Ensure these match your paths
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthServices {
-  //sign up user
+  // Sign up user
   void signUpUser({
     required BuildContext context,
     required String email,
@@ -24,10 +25,11 @@ class AuthServices {
         id: '',
         email: email,
         name: name,
-        type: '',
+        type: 'user', // Default type
         token: '',
         password: password,
       );
+
       http.Response res = await http.post(
         Uri.parse('$uri/api/signup'),
         body: user.toJson(),
@@ -35,6 +37,9 @@ class AuthServices {
           'Content-Type': 'application/json; charset=UTF-8',
         },
       );
+
+      if (!context.mounted) return;
+
       httpErrorHandle(
         response: res,
         context: context,
@@ -46,11 +51,11 @@ class AuthServices {
         },
       );
     } catch (e) {
-      showSnackBar(context, e.toString());
+      if (context.mounted) showSnackBar(context, e.toString());
     }
   }
 
-  // sign in user
+  // Sign in user
   void signInUser({
     required BuildContext context,
     required String email,
@@ -64,42 +69,68 @@ class AuthServices {
           'Content-Type': 'application/json; charset=UTF-8',
         },
       );
+
+      if (!context.mounted) return;
+
       httpErrorHandle(
         response: res,
         context: context,
         onSuccess: () async {
           SharedPreferences prefs = await SharedPreferences.getInstance();
-          Provider.of<UserProvider>(context, listen: false).setUser(res.body);
+
+          // Set user data in Provider
+          final userProvider = Provider.of<UserProvider>(
+            context,
+            listen: false,
+          );
+          userProvider.setUser(res.body);
+
+          // Save token locally
           await prefs.setString('x-auth-token', jsonDecode(res.body)['token']);
+
+          if (!context.mounted) return;
+
+          // DETERMINING THE ROUTE BASED ON TYPE
+          String nextRoute;
+          if (userProvider.user.isAdmin) {
+            nextRoute = AdminPage.routeName;
+          } else if (userProvider.user.isEmployee) {
+            nextRoute = EmployeePage.routeName;
+          } else {
+            nextRoute = HomePage.routeName;
+          }
+
           Navigator.pushNamedAndRemoveUntil(
             context,
-            HomePage.routeName,
+            nextRoute,
             (route) => false,
           );
         },
       );
     } catch (e) {
-      showSnackBar(context, e.toString());
+      if (context.mounted) showSnackBar(context, e.toString());
     }
   }
 
-  // get user data
+  // Get user data
   void getUserData(BuildContext context) async {
     try {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       String? token = prefs.getString('x-auth-token');
 
-      if (token == null) {
+      if (token == null || token.isEmpty) {
         prefs.setString('x-auth-token', '');
+        return;
       }
 
       var tokenRes = await http.post(
         Uri.parse('$uri/tokenIsValid'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
-          'x-auth-token': token!,
+          'x-auth-token': token,
         },
       );
+
       var response = jsonDecode(tokenRes.body);
 
       if (response == true) {
@@ -111,11 +142,12 @@ class AuthServices {
           },
         );
 
+        if (!context.mounted) return;
         var userProvider = Provider.of<UserProvider>(context, listen: false);
         userProvider.setUser(userRes.body);
       }
     } catch (e) {
-      showSnackBar(context, e.toString());
+      // Quietly fail or log during background data fetch
     }
   }
 }

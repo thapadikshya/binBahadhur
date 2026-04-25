@@ -18,6 +18,29 @@ class User {
     required this.token,
   });
 
+  bool get isAdmin => type == 'admin';
+  bool get isUser => type == 'user';
+  bool get isEmployee => type == 'employee';
+  bool get isProvider => type == 'user_provider';
+
+  User copyWith({
+    String? id,
+    String? email,
+    String? password,
+    String? name,
+    String? token,
+    String? type,
+  }) {
+    return User(
+      id: id ?? this.id,
+      email: email ?? this.email,
+      password: password ?? this.password,
+      name: name ?? this.name,
+      token: token ?? this.token,
+      type: type ?? this.type,
+    );
+  }
+
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
       'id': id,
